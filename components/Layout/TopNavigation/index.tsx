@@ -3,17 +3,17 @@ import styles from '../index.module.less';
 import React from 'react';
 import styled from '@emotion/styled';
 
-const HeaderWrapper = styled.div`
+const HeaderWrapper: any = styled.div`
   .ant-btn {
-    color: #fff !important;
+    color: ${(props: any) => (props?.gotBlack ? '#1c1c1a' : '#fff')} !important;
   }
 `;
 const { Header } = Layout;
 
-const TopNavigation = () => {
+const TopNavigation = (props: any) => {
   return (
-    <Header className="site-layout-menu" style={{ paddingLeft: 20 }}>
-      <HeaderWrapper>
+    <Header className="site-layout-menu" style={{ paddingLeft: 20, marginTop: 20 }}>
+      <HeaderWrapper gotBlack={props?.black}>
         <Row justify={'space-between'} align="middle">
           <Col
             xs={24}

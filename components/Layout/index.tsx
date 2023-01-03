@@ -24,6 +24,7 @@ const BaseLayout: React.FC<any> = ({ children }) => {
   }, [xs]);
 
   useEffect(() => {
+    console.log('pageProps', pageProps);
     if (pageProps?.sliders) {
       setSliders(pageProps?.sliders?.map((slider) => slider?.media?.data?.attributes?.url ?? null));
     }
@@ -33,45 +34,56 @@ const BaseLayout: React.FC<any> = ({ children }) => {
     <>
       <Layout className={styles.root}>
         <Layout className="site-layout">
-          <HeroSlider
-            height={600}
-            accessability={{
-              shouldDisplayButtons: false,
-              orientation: 'horizontal',
-            }}
-            autoplay
-            controller={{
-              initialSlide: 1,
-              slidingDuration: 1000,
-              slidingDelay: 1000,
-            }}>
-            <Overlay>
-              <TopNavigation />
-            </Overlay>
-            {sliders
-              .filter((slider: any) => slider !== null)
-              .map((item: any, index: number) => (
-                <Slide
-                  label={`Slide ${index + 1}`}
-                  key={index}
-                  background={{
-                    backgroundColor: '#8A8A8A',
-                    maskBackgroundBlendMode: 'luminosity',
-                    backgroundImageSrc: `${BASE_API + item}`,
-                  }}
-                />
-              ))}
-            <SideNav />
-          </HeroSlider>
+          {!pageProps?.isError && pageProps?.haveSlider && (
+            <HeroSlider
+              height={600}
+              accessability={{
+                shouldDisplayButtons: false,
+                orientation: 'horizontal',
+              }}
+              autoplay
+              controller={{
+                initialSlide: 1,
+                slidingDuration: 1000,
+                slidingDelay: 1000,
+              }}>
+              <Overlay>
+                <TopNavigation />
+              </Overlay>
+              {sliders
+                .filter((slider: any) => slider !== null)
+                .map((item: any, index: number) => (
+                  <Slide
+                    label={`Slide ${index + 1}`}
+                    key={index}
+                    background={{
+                      backgroundColor: '#8A8A8A',
+                      maskBackgroundBlendMode: 'luminosity',
+                      backgroundImageSrc: `${BASE_API + item}`,
+                    }}
+                  />
+                ))}
+              <SideNav />
+            </HeroSlider>
+          )}
+          {!pageProps?.isError && !pageProps?.haveSlider && <TopNavigation black />}
+
           <Content
             className="site-layout-background-content"
             style={{
-              margin: '24px 16px',
-              padding: 24,
               minHeight: 280,
             }}>
             {children}
           </Content>
+          {/*<Content*/}
+          {/*  className="site-layout-background-content"*/}
+          {/*  style={{*/}
+          {/*    margin: '24px 16px',*/}
+          {/*    padding: 24,*/}
+          {/*    minHeight: 280,*/}
+          {/*  }}>*/}
+          {/*  {children}*/}
+          {/*</Content>*/}
         </Layout>
       </Layout>
     </>

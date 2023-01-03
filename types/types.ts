@@ -83,7 +83,7 @@ export namespace Resources {
   };
   export type Requests = {
     sort?: string[] | string;
-    filters?: [string, FiltersTypes][];
+    filters?: any;
     populate?: PopulateTypes;
     pagination?: PaginationTypes;
     fields?: string[];

@@ -23,9 +23,9 @@ export const getSliders = (params: RootResources.getSliderTypes.request) => {
  * @returns RootResources.getPageTypes.response
  */
 
-export const getPage = (params: RootResources.getPageTypes.request) => {
+export const getPage = (params: any) => {
   return http
-    .get('/pages', { params })
+    .get('/pages?filters[slug][$eq]=' + params)
     .then((response) => response.data as RootResources.getPageTypes.response)
     .catch((error) => {
       throw error;
