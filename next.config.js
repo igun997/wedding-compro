@@ -7,6 +7,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 const withPlugins = require('next-compose-plugins');
+const withTM = require('next-transpile-modules')(['hero-slider']);
 const nextConfig = withAntdLess({
   modifyVars: {
     'primary-color': '#075E54',
@@ -26,7 +27,7 @@ const nextConfig = withAntdLess({
   },
 });
 
-module.exports = withPlugins([withBundleAnalyzer, nextConfig, withPWA], {
+module.exports = withPlugins([withBundleAnalyzer, nextConfig, withPWA, withTM], {
   nextjs: {
     localIdentNameFollowDev: true,
   },

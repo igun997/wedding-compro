@@ -2,6 +2,10 @@
   min-height: 100vh;
 
   :global {
+    body {
+      font-family: Tenor Sans, sans-serif;
+    }
+
     .ant-alert-info {
       background-color: #ebf7ff;
       border: 1px solid #003c66;
@@ -35,6 +39,15 @@
 
     .site-layout .site-layout-background {
       background: #FFFFFF;
+    }
+
+    .site-layout .site-layout-menu {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      z-index: 3;
+      background: transparent !important;
     }
 
     .site-layout .site-layout-background-content {

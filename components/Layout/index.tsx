@@ -1,10 +1,17 @@
-import { Grid, Image, Layout, Row } from 'antd';
+import { Grid, Layout } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
+import HeroSlider, { Overlay, SideNav, Slide } from 'hero-slider';
+import TopNavigation from './TopNavigation';
+import { useAppSelector } from '../../configs/hooks.config';
+import { BASE_API } from '../../constants/config.constant';
 
-const { Header, Sider, Content } = Layout;
+const { Content } = Layout;
 const { useBreakpoint } = Grid;
+
 const BaseLayout: React.FC<any> = ({ children }) => {
+  const pageProps = useAppSelector((state) => state.pageProps);
+  const [sliders, setSliders] = useState<any>([]);
   const [collapsed, setCollapsed] = useState<boolean>(false);
   const { xs } = useBreakpoint();
   const onClose = () => {
@@ -16,23 +23,46 @@ const BaseLayout: React.FC<any> = ({ children }) => {
     }
   }, [xs]);
 
+  useEffect(() => {
+    if (pageProps?.sliders) {
+      setSliders(pageProps?.sliders?.map((slider) => slider?.media?.data?.attributes?.url ?? null));
+    }
+  }, [pageProps]);
+
   return (
     <>
       <Layout className={styles.root}>
         <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ paddingLeft: 20 }}>
-            <Row justify={'space-between'}>
-              <Image
-                width={40}
-                height={40}
-                src={
-                  'https://static.vecteezy.com/system/resources/previews/006/793/369/original/gamer-anime-boy-with-character-with-rock-hand-sign-mascot-esport-logo-free-vector.jpg'
-                }
-                preview={false}
-                className={styles.logo}
-              />
-            </Row>
-          </Header>
+          <HeroSlider
+            height={600}
+            accessability={{
+              shouldDisplayButtons: false,
+              orientation: 'horizontal',
+            }}
+            autoplay
+            controller={{
+              initialSlide: 1,
+              slidingDuration: 1000,
+              slidingDelay: 1000,
+            }}>
+            <Overlay>
+              <TopNavigation />
+            </Overlay>
+            {sliders
+              .filter((slider: any) => slider !== null)
+              .map((item: any, index: number) => (
+                <Slide
+                  label={`Slide ${index + 1}`}
+                  key={index}
+                  background={{
+                    backgroundColor: '#8A8A8A',
+                    maskBackgroundBlendMode: 'luminosity',
+                    backgroundImageSrc: `${BASE_API + item}`,
+                  }}
+                />
+              ))}
+            <SideNav />
+          </HeroSlider>
           <Content
             className="site-layout-background-content"
             style={{
