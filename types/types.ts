@@ -69,6 +69,7 @@ export namespace Resources {
       title?: string;
       paragraphs?: string[];
       url?: string;
+      text?: string;
       background?: string;
       instagram_username?: string;
     };

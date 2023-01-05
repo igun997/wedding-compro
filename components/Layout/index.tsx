@@ -24,7 +24,6 @@ const BaseLayout: React.FC<any> = ({ children }) => {
   }, [xs]);
 
   useEffect(() => {
-    console.log('pageProps', pageProps);
     if (pageProps?.sliders) {
       setSliders(pageProps?.sliders?.map((slider) => slider?.media?.data?.attributes?.url ?? null));
     }

@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { Button, Result, Row } from 'antd';
 import { getPage, getSliders } from '../services/root';
 import { RootResources } from '../types/services/root';
-import useLoading from '../components/useLoading';
 import { useAppDispatch } from '../configs/hooks.config';
 import {
   clearError,
@@ -17,65 +16,73 @@ import {
 } from '../redux/slices/pageProps';
 import { useRouter } from 'next/router';
 
-const Home: LayoutConfigWithNextPage = (props) => {
-  const router = useRouter();
-  const [pageError, setPageError] = React.useState<boolean>(false);
-  const slug = (router.query.slug as string[]) || [];
-  const dispatch = useAppDispatch();
-  const sliderLoading = useLoading();
-  const pageLoading = useLoading();
+export async function getServerSideProps({ req, res, resolvedUrl }: any) {
   const sliderRequest: RootResources.getSliderTypes.request = {
     fields: ['name', 'description'],
     populate: ['media'],
   };
-  const loadSliders = () => {
-    sliderLoading.handleLoading(true);
-    getSliders(sliderRequest)
-      .then((res) => {
-        const sliders = res.data.map((slider) => slider.attributes);
-        dispatch(setSliders(sliders));
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        sliderLoading.handleLoading(false);
-      });
+  let _data: any = null;
+  let _sliders: any = null;
+  let _trimPath = resolvedUrl.replace('/', '');
+  if (_trimPath === '') {
+    _trimPath = 'home';
+  }
+  try {
+    _data = await getPage(_trimPath);
+    _sliders = await getSliders(sliderRequest);
+  } catch (e) {
+    _data = null;
+    _sliders = null;
+  }
+  //get sliders
+
+  const isError = _data === null || _sliders === null;
+  return {
+    props: {
+      page: _data as RootResources.getPageTypes.response,
+      sliders: _sliders as RootResources.getSliderTypes.response,
+      isError: isError,
+    },
   };
-  const loadPage = (_slug: string) => {
-    pageLoading.handleLoading(true);
-    getPage(_slug)
-      .then((res) => {
-        const isPage = res.data.length > 0;
-        if (isPage) {
-          const page = res.data[0].attributes;
-          dispatch(setTitle(page?.title ?? ''));
-          dispatch(setDescription(page?.description ?? ''));
-          dispatch(setKeywords(page?.keywords ?? ''));
-          dispatch(setSections(page?.sections ?? []));
-          dispatch(setHaveSlider(page?.haveSlider ?? false));
-          setPageError(false);
-          dispatch(clearError());
-        } else {
-          dispatch(setIsError(true));
-          setPageError(true);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        pageLoading.handleLoading(false);
-      });
+}
+
+const Home: LayoutConfigWithNextPage = (props: any) => {
+  const router = useRouter();
+  const [pageError, setPageError] = React.useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const loadSliders = (res: RootResources.getSliderTypes.response) => {
+    const sliders = res.data.map((slider) => slider.attributes);
+    dispatch(setSliders(sliders));
   };
-  useEffect(() => {
-    if (!pageError) {
-      loadSliders();
+  const loadPage = (res: RootResources.getPageTypes.response) => {
+    const isPage = res.data.length > 0;
+    if (isPage) {
+      const page = res.data[0].attributes;
+      dispatch(setTitle(page?.title ?? ''));
+      dispatch(setDescription(page?.description ?? ''));
+      dispatch(setKeywords(page?.keywords ?? ''));
+      dispatch(setSections(page?.sections ?? []));
+      dispatch(setHaveSlider(page?.haveSlider ?? false));
+      setPageError(false);
+      dispatch(clearError());
     }
-  }, [pageError]);
+  };
   useEffect(() => {
-    loadPage(slug.length > 0 ? slug[0] : 'home');
-  }, [slug]);
+    if (props) {
+      if (props?.isError) {
+        dispatch(setIsError(true));
+        setPageError(true);
+      }
+      if (props?.isError === false) {
+        if (props?.page) {
+          loadPage(props?.page);
+        }
+        if (props?.sliders) {
+          loadSliders(props?.sliders);
+        }
+      }
+    }
+  }, [props]);
   if (pageError) {
     return (
       <Result
