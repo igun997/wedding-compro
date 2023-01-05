@@ -5,8 +5,6 @@ import { Col, Divider, Grid, Row, Space, Typography } from 'antd';
 import styled from '@emotion/styled';
 import { RightOutlined } from '@ant-design/icons';
 
-const onXs = 450;
-const onMd = 269;
 const images = [
   'https://picsum.photos/200/300',
   'https://picsum.photos/200/300',
@@ -86,7 +84,7 @@ const WelcomeSection: FC<Resources.SectionTypes> = (props) => {
                   <Divider orientation="center" type="horizontal" />
                 </Col>
                 <Col xs={24}>
-                  <Col xs={24} className={'portfolio'}>
+                  <Col xs={24}>
                     <Row gutter={[10, 10]}>
                       {images.map((item, index) => (
                         <Col key={`image-${index}`} xs={24} md={8}>
