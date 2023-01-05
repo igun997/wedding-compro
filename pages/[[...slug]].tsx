@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 
 export async function getServerSideProps({ req, res, resolvedUrl }: any) {
   const sliderRequest: RootResources.getSliderTypes.request = {
-    fields: ['name', 'description'],
+    fields: ['name'],
     populate: ['media'],
   };
   let _data: any = null;
