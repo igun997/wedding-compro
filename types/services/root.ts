@@ -27,7 +27,14 @@ export namespace RootResources {
     };
   }
   export namespace getPageTypes {
-    export type data = Resources.PageTypes;
+    export type data = Resources.PageTypes & {
+      header_image: {
+        data: {
+          id: number;
+          attributes: Resources.MediaAttributes;
+        } | null;
+      };
+    };
     export type _response = {
       id: number;
       attributes: data;

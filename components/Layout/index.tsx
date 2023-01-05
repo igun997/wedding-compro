@@ -33,9 +33,15 @@ const BaseLayout: React.FC<any> = ({ children }) => {
     <>
       <Layout className={styles.root}>
         <Layout className="site-layout">
-          {!pageProps?.isError && pageProps?.haveSlider && (
+          {!pageProps?.isError && (
             <HeroSlider
-              height={600}
+              height={
+                !pageProps?.haveSlider && pageProps?.header_image?.data === null
+                  ? xs
+                    ? 100
+                    : 300
+                  : 600
+              }
               accessability={{
                 shouldDisplayButtons: false,
                 orientation: 'horizontal',
@@ -47,23 +53,37 @@ const BaseLayout: React.FC<any> = ({ children }) => {
                 slidingDelay: 1000,
               }}>
               <Overlay>
-                <TopNavigation key={'desktop'} />
+                <TopNavigation
+                  black={!pageProps?.haveSlider && pageProps?.header_image?.data === null}
+                  key={'desktop'}
+                />
               </Overlay>
-              {sliders
-                .filter((slider: any) => slider !== null)
-                .map((item: any, index: number) => (
-                  <Slide
-                    label={`Slide ${index + 1}`}
-                    key={index}
-                    background={{
-                      backgroundImageSrc: `${BASE_API + item}`,
-                    }}
-                  />
-                ))}
-              <SideNav />
+              {pageProps?.haveSlider &&
+                sliders
+                  .filter((slider: any) => slider !== null)
+                  .map((item: any, index: number) => (
+                    <Slide
+                      label={`Slide ${index + 1}`}
+                      key={index}
+                      background={{
+                        backgroundImageSrc: `${BASE_API + item}`,
+                      }}
+                    />
+                  ))}
+              {!pageProps?.haveSlider && pageProps?.header_image?.data !== null && (
+                <Slide
+                  label={`Slide 1`}
+                  key={'slide-1'}
+                  background={{
+                    backgroundImageSrc: `${
+                      BASE_API + pageProps?.header_image?.data?.attributes?.url
+                    }`,
+                  }}
+                />
+              )}
+              {!(!pageProps?.haveSlider && pageProps?.header_image?.data !== null) && <SideNav />}
             </HeroSlider>
           )}
-          {!pageProps?.isError && !pageProps?.haveSlider && <TopNavigation key={'mobile'} black />}
 
           <Content
             className="site-layout-background-content"

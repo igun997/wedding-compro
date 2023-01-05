@@ -183,13 +183,13 @@ const TopNavigation = (props: any) => {
             <Col
               xs={24}
               md={{
-                span: 10,
-                offset: 7,
+                span: 12,
+                offset: 6,
               }}>
               <Row gutter={[5, 5]} justify={'space-between'} align="middle">
                 {leftMenus.map((item) => createDesktopMenu(item))}
                 <Col>
-                  <Image src={logo} height={192} preview={false} className={styles.logo} />
+                  <Image src={logo} height={160} preview={false} className={styles.logo} />
                 </Col>
                 {rightMenus.map((item) => createDesktopMenu(item))}
               </Row>

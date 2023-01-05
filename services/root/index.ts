@@ -25,7 +25,7 @@ export const getSliders = (params: RootResources.getSliderTypes.request) => {
 
 export const getPage = (params: any) => {
   return http
-    .get('/pages?filters[slug][$eq]=' + params)
+    .get('/pages?populate=*&filters[slug][$eq]=' + params)
     .then((response) => response.data as RootResources.getPageTypes.response)
     .catch((error) => {
       throw error;

@@ -6,6 +6,12 @@ import { RootResources } from '../../../types/services/root';
 const initialState: Resources.PageTypes & {
   sliders?: RootResources.getSliderTypes.data[];
   isError?: boolean;
+  header_image?: {
+    data: {
+      id: number;
+      attributes: Resources.MediaAttributes;
+    } | null;
+  };
 } = {
   description: '',
   haveSlider: false,
@@ -52,6 +58,17 @@ export const pagePropsSlice = createSlice({
       state.haveSlider = false;
       state.sliders = [];
     },
+    setHeaderImage: (
+      state,
+      action: PayloadAction<{
+        data: {
+          id: number;
+          attributes: Resources.MediaAttributes;
+        } | null;
+      }>,
+    ) => {
+      state.header_image = action.payload;
+    },
     clearError: (state) => {
       state.isError = false;
     },
@@ -63,6 +80,10 @@ export const pagePropsSlice = createSlice({
       state.sections = [];
       state.haveSlider = false;
       state.sliders = [];
+      state.isError = false;
+      state.header_image = {
+        data: null,
+      };
     },
   },
 });
@@ -76,6 +97,7 @@ export const {
   setKeywords,
   setSections,
   clearPageProps,
+  setHeaderImage,
   setIsError,
   clearError,
 } = pagePropsSlice.actions;

@@ -8,6 +8,7 @@ import {
   clearError,
   setDescription,
   setHaveSlider,
+  setHeaderImage,
   setIsError,
   setKeywords,
   setSections,
@@ -68,12 +69,12 @@ const Home: LayoutConfigWithNextPage = (props: any) => {
       dispatch(setKeywords(page?.keywords ?? ''));
       dispatch(setSections(page?.sections ?? []));
       dispatch(setHaveSlider(page?.haveSlider ?? false));
+      dispatch(setHeaderImage(page?.header_image));
       setPageError(false);
       dispatch(clearError());
     }
   };
   useEffect(() => {
-    console.log('props', props);
     if (props) {
       if (props?.isError) {
         dispatch(setIsError(true));
