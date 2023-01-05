@@ -47,7 +47,7 @@ const BaseLayout: React.FC<any> = ({ children }) => {
                 slidingDelay: 1000,
               }}>
               <Overlay>
-                <TopNavigation />
+                <TopNavigation key={'desktop'} />
               </Overlay>
               {sliders
                 .filter((slider: any) => slider !== null)
@@ -63,7 +63,7 @@ const BaseLayout: React.FC<any> = ({ children }) => {
               <SideNav />
             </HeroSlider>
           )}
-          {!pageProps?.isError && !pageProps?.haveSlider && <TopNavigation black />}
+          {!pageProps?.isError && !pageProps?.haveSlider && <TopNavigation key={'mobile'} black />}
 
           <Content
             className="site-layout-background-content"
@@ -72,15 +72,6 @@ const BaseLayout: React.FC<any> = ({ children }) => {
             }}>
             {children}
           </Content>
-          {/*<Content*/}
-          {/*  className="site-layout-background-content"*/}
-          {/*  style={{*/}
-          {/*    margin: '24px 16px',*/}
-          {/*    padding: 24,*/}
-          {/*    minHeight: 280,*/}
-          {/*  }}>*/}
-          {/*  {children}*/}
-          {/*</Content>*/}
         </Layout>
       </Layout>
     </>

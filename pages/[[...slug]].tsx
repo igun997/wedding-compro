@@ -1,9 +1,9 @@
 import { LayoutConfigWithNextPage } from '../configs/layout.config';
 import React, { useEffect } from 'react';
-import { Button, Result, Row } from 'antd';
+import { Button, Col, Result, Row } from 'antd';
 import { getPage, getSliders } from '../services/root';
 import { RootResources } from '../types/services/root';
-import { useAppDispatch } from '../configs/hooks.config';
+import { useAppDispatch, useAppSelector } from '../configs/hooks.config';
 import {
   clearError,
   setDescription,
@@ -15,8 +15,9 @@ import {
   setTitle,
 } from '../redux/slices/pageProps';
 import { useRouter } from 'next/router';
+import RenderSection from '../components/Whitelabel';
 
-export async function getServerSideProps({ req, res, resolvedUrl }: any) {
+export async function getServerSideProps({ resolvedUrl }: any) {
   const sliderRequest: RootResources.getSliderTypes.request = {
     fields: ['name'],
     populate: ['media'],
@@ -52,6 +53,7 @@ export async function getServerSideProps({ req, res, resolvedUrl }: any) {
 const Home: LayoutConfigWithNextPage = (props: any) => {
   const router = useRouter();
   const [pageError, setPageError] = React.useState<boolean>(false);
+  const pages = useAppSelector((state) => state.pageProps);
   const dispatch = useAppDispatch();
   const loadSliders = (res: RootResources.getSliderTypes.response) => {
     const sliders = res.data.map((slider) => slider.attributes);
@@ -101,11 +103,20 @@ const Home: LayoutConfigWithNextPage = (props: any) => {
       />
     );
   } else {
-    return <Row gutter={[10, 10]}></Row>;
+    return (
+      <Row>
+        {pages?.sections &&
+          pages?.sections?.map((section, index) => (
+            <Col key={index} {...section.layout}>
+              <RenderSection {...section} />
+            </Col>
+          ))}
+      </Row>
+    );
   }
 };
 Home.layout = 'base';
-Home.title = 'Imagenic';
-Home.description = 'Photoshoot Website';
+Home.title = 'Cosmic Visual';
+Home.description = 'Moment Without Words';
 
 export default Home;

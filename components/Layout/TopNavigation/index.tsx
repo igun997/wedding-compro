@@ -5,6 +5,8 @@ import styled from '@emotion/styled';
 import { MenuOutlined } from '@ant-design/icons';
 import MobileMenu from '../MobileMenu';
 import { useRouter } from 'next/router';
+import LogoBlack from '../../../assets/images/black-192.png';
+import LogoWhite from '../../../assets/images/white-192.png';
 
 export type _MenuTypes = {
   slug: string | null;
@@ -47,8 +49,6 @@ const _menus: _MenuTypes[] = [
     name: 'Family',
   },
 ];
-const logo =
-  'https://static.vecteezy.com/system/resources/previews/006/793/369/original/gamer-anime-boy-with-character-with-rock-hand-sign-mascot-esport-logo-free-vector.jpg';
 const HeaderWrapper: any = styled.div`
   .ant-btn {
     color: ${(props: any) => (props?.gotBlack ? 'var(--primary-headings)' : '#fff')} !important;
@@ -63,6 +63,7 @@ const { useBreakpoint } = Grid;
 const TopNavigation = (props: any) => {
   const { xs } = useBreakpoint();
   const router = useRouter();
+  const [logo, setLogo] = React.useState<any>(LogoWhite.src);
   const [open, setOpen] = React.useState(false);
   const [leftMenus, setLeftMenus] = React.useState<_MenuTypes[]>([]);
   const [rightMenus, setRightMenus] = React.useState<_MenuTypes[]>([]);
@@ -79,7 +80,7 @@ const TopNavigation = (props: any) => {
     // create menu with Button component if item has no children
     if (!item?.children) {
       return (
-        <Col>
+        <Col key={`single-${item.slug ?? Math.random()}`}>
           <Button key={item?.slug} type="link" onClick={() => navigateTo(item?.slug)}>
             {item?.name}
           </Button>
@@ -89,7 +90,7 @@ const TopNavigation = (props: any) => {
     // create menu with Dropdown component if item has children
     const MenuChildren = (
       <>
-        <Menu>
+        <Menu key={`sub-multi-${item.slug ?? Math.random()}`}>
           {item?.children?.map((child) => (
             <Menu.Item
               key={`menu-${child.slug ?? Math.random()}`}
@@ -101,12 +102,16 @@ const TopNavigation = (props: any) => {
       </>
     );
     return (
-      <Col>
+      <Col key={`col-${item.slug ?? Math.random()}`}>
         <Dropdown
+          key={`multi-${item.slug ?? Math.random()}`}
           overlayClassName={styles.dropdownMenu}
           overlay={MenuChildren}
-          placement="bottomCenter">
-          <Button type="link" onClick={() => navigateTo(item?.slug)}>
+          placement="bottom">
+          <Button
+            type="link"
+            key={`btn-${item.slug ?? Math.random()}`}
+            onClick={() => navigateTo(item?.slug)}>
             <Space>{item.name}</Space>
           </Button>
         </Dropdown>
@@ -133,6 +138,14 @@ const TopNavigation = (props: any) => {
     setRightMenus(_rightMenus);
   }, []);
 
+  React.useEffect(() => {
+    if (props?.black) {
+      setLogo(LogoBlack.src);
+    } else {
+      setLogo(LogoWhite.src);
+    }
+  }, [props?.black]);
+
   return (
     <Header
       className="site-layout-menu"
@@ -142,7 +155,7 @@ const TopNavigation = (props: any) => {
           <>
             <Row justify={'space-between'} align="middle">
               <Col>
-                <Image width={40} height={40} src={logo} preview={false} className={styles.logo} />
+                <Image src={logo} height={96} preview={false} className={styles.logo} />
               </Col>
               <Col>
                 <Button onClick={handleOpen} type="link">
@@ -176,13 +189,7 @@ const TopNavigation = (props: any) => {
               <Row gutter={[5, 5]} justify={'space-between'} align="middle">
                 {leftMenus.map((item) => createDesktopMenu(item))}
                 <Col>
-                  <Image
-                    width={40}
-                    height={40}
-                    src={logo}
-                    preview={false}
-                    className={styles.logo}
-                  />
+                  <Image src={logo} height={192} preview={false} className={styles.logo} />
                 </Col>
                 {rightMenus.map((item) => createDesktopMenu(item))}
               </Row>

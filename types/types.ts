@@ -40,31 +40,15 @@ export namespace Resources {
     total?: number;
     pageCount?: number;
   };
-  export type FiltersTypes = {
-    $eq?: any;
-    $eqi?: any;
-    $ne?: any;
-    $lt?: any;
-    $lte?: any;
-    $gt?: any;
-    $gte?: any;
-    $in?: any;
-    $notIn?: any;
-    $contains?: any;
-    $notContains?: any;
-    $containsi?: any;
-    $notContainsi?: any;
-    $null?: any;
-    $notNull?: any;
-    $between?: any;
-    $startsWith?: any;
-    $endsWith?: any;
-    $or?: any;
-    $and?: any;
-  };
   export type PopulateTypes = any;
   export type SectionTypes = {
     component: string;
+    layout: {
+      xs?: any;
+      sm?: any;
+      md?: any;
+      lg?: any;
+    };
     data: {
       title?: string;
       paragraphs?: string[];
