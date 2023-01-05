@@ -3,6 +3,7 @@ import styles from '../index.module.less';
 import React from 'react';
 import styled from '@emotion/styled';
 import { MenuOutlined } from '@ant-design/icons';
+import MobileMenu from '../MobileMenu';
 
 const logo =
   'https://static.vecteezy.com/system/resources/previews/006/793/369/original/gamer-anime-boy-with-character-with-rock-hand-sign-mascot-esport-logo-free-vector.jpg';
@@ -39,9 +40,7 @@ const TopNavigation = (props: any) => {
               </Col>
             </Row>
             <Drawer placement="right" onClose={handleOpen} visible={open} key={'right-drawer'}>
-              <p>Some contents...</p>
-              <p>Some contents...</p>
-              <p>Some contents...</p>
+              <MobileMenu />
             </Drawer>
           </>
         ) : (

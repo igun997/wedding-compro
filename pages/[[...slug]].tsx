@@ -30,6 +30,9 @@ export async function getServerSideProps({ req, res, resolvedUrl }: any) {
   try {
     _data = await getPage(_trimPath);
     _sliders = await getSliders(sliderRequest);
+    if (_data.data.length === 0) {
+      _data = null;
+    }
   } catch (e) {
     _data = null;
     _sliders = null;
@@ -68,6 +71,7 @@ const Home: LayoutConfigWithNextPage = (props: any) => {
     }
   };
   useEffect(() => {
+    console.log('props', props);
     if (props) {
       if (props?.isError) {
         dispatch(setIsError(true));
