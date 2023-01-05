@@ -27,7 +27,7 @@ function getItem(
 const MobileMenu = (props: any) => {
   const [items, setItems] = React.useState<MenuProps['items']>([]);
   const handleClick = (e: any) => {
-    console.log('click ', e);
+    props?.navigate && props?.navigate(e.key);
     props?.closeDrawer && props?.closeDrawer();
   };
   useEffect(() => {
@@ -48,14 +48,7 @@ const MobileMenu = (props: any) => {
   }, [props]);
   return (
     <div className={styles.root}>
-      <Menu
-        onClick={handleClick}
-        style={{ width: '100%' }}
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['sub1']}
-        mode="inline"
-        items={items}
-      />
+      <Menu onClick={handleClick} style={{ width: '100%' }} mode="inline" items={items} />
     </div>
   );
 };
