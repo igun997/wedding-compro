@@ -39,7 +39,6 @@ export async function getServerSideProps({ resolvedUrl }: any) {
     _data = null;
     _sliders = null;
   }
-  //get sliders
 
   const isError = _data === null || _sliders === null;
   return {

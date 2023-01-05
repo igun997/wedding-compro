@@ -138,3 +138,16 @@ export const generateSignature = (
   const trimmer = createPayload.trim().replace(' ', '');
   return crypto.HmacSHA256(trimmer, SIGNATURE_KEY ?? '').toString();
 };
+
+//base64 to blob url
+export const base64ToBlob = (base64: string) => {
+  const byteString = base64;
+  const mimeString = byteString.split(',')[0].split(':')[1].split(';')[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ab], { type: mimeString });
+  return URL.createObjectURL(blob);
+};
