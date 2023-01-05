@@ -56,8 +56,6 @@ const BaseLayout: React.FC<any> = ({ children }) => {
                     label={`Slide ${index + 1}`}
                     key={index}
                     background={{
-                      backgroundColor: '#8A8A8A',
-                      maskBackgroundBlendMode: 'luminosity',
                       backgroundImageSrc: `${BASE_API + item}`,
                     }}
                   />

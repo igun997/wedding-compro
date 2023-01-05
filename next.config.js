@@ -10,9 +10,9 @@ const withPlugins = require('next-compose-plugins');
 const withTM = require('next-transpile-modules')(['hero-slider']);
 const nextConfig = withAntdLess({
   modifyVars: {
-    'primary-color': '#075E54',
-    'text-color': '#1F262C',
-    'text-color-secondary': '#3A3A3A',
+    'primary-color': '#1C1C1A',
+    'text-color': '#252222',
+    'text-color-secondary': '#B9AA96',
     'border-radius-base': '8px',
     'success-color': '#128C7E',
     'warning-color': '#FFB900',
