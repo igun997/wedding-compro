@@ -39,7 +39,7 @@ const MiniContactSection: FC<Resources.SectionTypes> = (props) => {
             </Col>
             {props?.data?.paragraphs &&
               props?.data?.paragraphs?.map((item, index) => (
-                <Col key={index} xs={24} md={12}>
+                <Col key={index} xs={24} md={16} xxl={12}>
                   <Typography.Text className={'content'}>{item}</Typography.Text>
                 </Col>
               ))}
