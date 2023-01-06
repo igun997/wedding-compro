@@ -56,16 +56,11 @@ export async function getServerSideProps({ resolvedUrl, query }: any) {
     const getPost = await getPostBySlug(pageQuery, true);
     if (getPost.data.length > 0) {
       const selectPost = getPost.data[0];
-      let isSlider: any = false;
       pageSection.data = pageSection.data.map((e) => {
-        isSlider = e.attributes.haveSlider;
-        if (
-          isSlider === false &&
-          e.attributes.header_image.data !== null &&
-          selectPost?.attributes?.featured
-        ) {
+        if (e.attributes.header_image.data !== null && selectPost?.attributes?.featured) {
           if (selectPost.attributes.featured.data !== null) {
             e.attributes.header_image = selectPost.attributes.featured;
+            e.attributes.haveSlider = false;
           }
         }
         e.attributes.sections = [
@@ -85,18 +80,6 @@ export async function getServerSideProps({ resolvedUrl, query }: any) {
         ];
         return e;
       });
-      if (isSlider && selectPost?.attributes?.featured) {
-        sliders.data = [
-          {
-            id: 0,
-            attributes: {
-              description: 'Premade',
-              name: 'Premade',
-              media: selectPost.attributes.featured,
-            },
-          },
-        ];
-      }
     }
   }
   return {
