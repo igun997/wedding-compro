@@ -44,10 +44,6 @@ const _menus: _MenuTypes[] = [
     slug: 'contact',
     name: 'Contact',
   },
-  {
-    slug: 'family',
-    name: 'Family',
-  },
 ];
 const HeaderWrapper: any = styled.div`
   .ant-btn {

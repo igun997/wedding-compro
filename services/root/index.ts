@@ -79,3 +79,32 @@ export const getPostByType = (type: string, witContent: boolean, pageSize?: numb
       throw error;
     });
 };
+/**
+ * Get Post Data By Slug and Type
+ * @param type
+ * @param category
+ * @param witContent
+ * @param pageSize
+ * @returns RootResources.getPostTypes.response
+ */
+export const getPostBySlugAndType = (
+  type: string,
+  category: string,
+  witContent: boolean,
+  pageSize?: number,
+) => {
+  return http
+    .get(
+      `/posts?populate=*&filters[type][$eq]=${type}&filters[category][$eq]=${category}` +
+        `${
+          witContent
+            ? '&fields[]=contents&fields[]=title&fields[]=slug&fields[]=type&fields[]=category'
+            : '&fields[]=title&fields[]=slug&fields[]=type&fields[]=category'
+        }` +
+        `${pageSize !== undefined ? '&pagination[pageSize]=' + pageSize : ''}`,
+    )
+    .then((response) => response.data as RootResources.getPostTypes.response)
+    .catch((error) => {
+      throw error;
+    });
+};

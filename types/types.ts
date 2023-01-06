@@ -63,6 +63,10 @@ export namespace Resources {
       featured?: string[];
       embed_ig?: string;
       style?: CSSProperties;
+      filter?: {
+        type?: string;
+        category?: string;
+      };
     };
   };
   export type PageTypes = {

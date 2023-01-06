@@ -9,6 +9,7 @@ import { getPostByType } from '../../../services/root';
 import { RootResources } from '../../../types/services/root';
 import { BASE_API } from '../../../constants/config.constant';
 import { useRouter } from 'next/router';
+import { capitalizeFirstLetter } from '../../../utils/global.util';
 
 const CardList: any = styled.div`
   background: url('${(props: any) => props.image}');
@@ -126,7 +127,7 @@ const WelcomeSection: FC<Resources.SectionTypes> = (props) => {
                               <div className={'centering'}>
                                 <Space direction={'vertical'} align="center">
                                   <Typography.Text className={'cardTitle'}>
-                                    {item.category}
+                                    {capitalizeFirstLetter(item.category)}
                                   </Typography.Text>
                                   <Typography.Text className={'cardSubtitle'}>
                                     {item.title}

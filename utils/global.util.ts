@@ -151,3 +151,8 @@ export const base64ToBlob = (base64: string) => {
   const blob = new Blob([ab], { type: mimeString });
   return URL.createObjectURL(blob);
 };
+
+//captialize first letter
+export const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
