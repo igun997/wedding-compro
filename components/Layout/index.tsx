@@ -95,33 +95,35 @@ const BaseLayout: React.FC<any> = ({ children }) => {
             {children}
           </Content>
         </Layout>
-        <Footer className="footer-container">
-          <Row>
-            <Col
-              xs={24}
-              md={{
-                span: 10,
-                offset: 7,
-              }}>
-              <Row gutter={[10, 10]} justify="space-between" align="middle">
-                <Col>
-                  <Typography.Text className="footer-text">
-                    All content Copyright © 2023. All rights reserved.
-                  </Typography.Text>
-                </Col>
-                <Col>
-                  <Link href="#top">
-                    <UpOutlined
-                      style={{
-                        fontSize: 20,
-                      }}
-                    />
-                  </Link>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Footer>
+        {!pageProps?.isError && (
+          <Footer className="footer-container">
+            <Row>
+              <Col
+                xs={24}
+                md={{
+                  span: 10,
+                  offset: 7,
+                }}>
+                <Row gutter={[10, 10]} justify="space-between" align="middle">
+                  <Col>
+                    <Typography.Text className="footer-text">
+                      All content Copyright © 2023. All rights reserved.
+                    </Typography.Text>
+                  </Col>
+                  <Col>
+                    <Link href="#top">
+                      <UpOutlined
+                        style={{
+                          fontSize: 20,
+                        }}
+                      />
+                    </Link>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Footer>
+        )}
       </Layout>
     </>
   );

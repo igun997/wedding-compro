@@ -4,6 +4,7 @@ import { Button, Col, Result, Row } from 'antd';
 import { getPage, getPostBySlug, getSliders } from '../services/root';
 import { RootResources } from '../types/services/root';
 import { useAppDispatch, useAppSelector } from '../configs/hooks.config';
+import LogoBlack from '../assets/images/black-192.png';
 import {
   clearError,
   setDescription,
@@ -133,12 +134,12 @@ const Home: LayoutConfigWithNextPage = (props: any) => {
   if (pageError) {
     return (
       <Result
-        status="404"
-        title="404"
-        subTitle="Sorry, the page you visited does not exist."
+        icon={<img src={LogoBlack.src} alt="logo" />}
+        title="Halaman tidak ditemukan"
+        subTitle="Maaf, halaman yang anda cari tidak ditemukan"
         extra={
           <Button type="primary" onClick={() => router.push('/')}>
-            Back Home
+            Kembali ke Beranda
           </Button>
         }
       />
