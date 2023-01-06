@@ -1,6 +1,7 @@
 import WelcomeSection from './WelcomeSection';
 import MiniContactSection from './MiniContactSection';
 import InstagramFull from './InstagramFull';
+import PostSection from './PostSection';
 
 const RenderSection = ({ component, ...props }: any) => {
   switch (component) {
@@ -10,6 +11,8 @@ const RenderSection = ({ component, ...props }: any) => {
       return <MiniContactSection {...props} />;
     case 'instagram_full':
       return <InstagramFull {...props} />;
+    case 'post':
+      return  <PostSection {...props}/>
     default:
       return null;
   }
