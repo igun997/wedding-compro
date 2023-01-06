@@ -1,15 +1,15 @@
 import styles from './index.module.less';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Resources } from '../../../types/types';
-import { Col, Divider, Grid, Row, Space, Typography } from 'antd';
+import { Col, Divider, Grid, Row, Skeleton, Space, Typography } from 'antd';
 import styled from '@emotion/styled';
 import { RightOutlined } from '@ant-design/icons';
+import useLoading from '../../useLoading';
+import { getPostByType } from '../../../services/root';
+import { RootResources } from '../../../types/services/root';
+import { BASE_API } from '../../../constants/config.constant';
+import { useRouter } from 'next/router';
 
-const images = [
-  'https://picsum.photos/200/300',
-  'https://picsum.photos/200/300',
-  'https://picsum.photos/200/300',
-];
 const CardList: any = styled.div`
   background: url('${(props: any) => props.image}');
   color: #fff;
@@ -43,7 +43,34 @@ const CardList: any = styled.div`
 `;
 const { useBreakpoint } = Grid;
 const WelcomeSection: FC<Resources.SectionTypes> = (props) => {
+  const loadingPortfolio = useLoading();
+  const router = useRouter();
+  const [portfolio, setPortfolio] = useState<RootResources.getPostTypes.data[]>([]);
+  const loadPortfolio = () => {
+    loadingPortfolio.handleLoading(true);
+    getPostByType('portfolio', false)
+      .then((res) => {
+        setPortfolio(res.data && res.data.map((item) => item.attributes));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        loadingPortfolio.handleLoading(false);
+      });
+  };
   const { xs } = useBreakpoint();
+  const navigateToPortfolio = (slug?: string) => {
+    if (slug) {
+      router.push('/post/slug/' + slug);
+    }
+  };
+  useEffect(() => {
+    loadPortfolio();
+  }, []);
+  useEffect(() => {
+    console.log('portfolio', portfolio);
+  }, [portfolio]);
   return (
     <div className={styles.root}>
       <Row gutter={[10, 10]}>
@@ -85,23 +112,33 @@ const WelcomeSection: FC<Resources.SectionTypes> = (props) => {
                 </Col>
                 <Col xs={24}>
                   <Col xs={24}>
-                    <Row gutter={[10, 10]}>
-                      {images.map((item, index) => (
-                        <Col key={`image-${index}`} xs={24} md={8}>
-                          <CardList height={269} isMobile={xs} image={item}>
-                            <div className={'centering'}>
-                              <Space direction={'vertical'} align="center">
-                                <Typography.Text className={'cardTitle'}>Wedding</Typography.Text>
-                                <Typography.Text className={'cardSubtitle'}>
-                                  Redo - Ali
-                                </Typography.Text>
-                                <RightOutlined />
-                              </Space>
-                            </div>
-                          </CardList>
-                        </Col>
-                      ))}
-                    </Row>
+                    {loadingPortfolio.loading ? (
+                      <Skeleton loading />
+                    ) : (
+                      <Row gutter={[10, 10]}>
+                        {portfolio.map((item, index) => (
+                          <Col key={`image-${index}`} xs={24} md={8}>
+                            <CardList
+                              onClick={() => navigateToPortfolio(item.slug)}
+                              height={269}
+                              isMobile={xs}
+                              image={`${BASE_API}${item.featured?.data.attributes.url}`}>
+                              <div className={'centering'}>
+                                <Space direction={'vertical'} align="center">
+                                  <Typography.Text className={'cardTitle'}>
+                                    {item.category}
+                                  </Typography.Text>
+                                  <Typography.Text className={'cardSubtitle'}>
+                                    {item.title}
+                                  </Typography.Text>
+                                  <RightOutlined />
+                                </Space>
+                              </div>
+                            </CardList>
+                          </Col>
+                        ))}
+                      </Row>
+                    )}
                   </Col>
                 </Col>
               </Row>

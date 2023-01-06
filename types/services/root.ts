@@ -48,4 +48,33 @@ export namespace RootResources {
       };
     };
   }
+  export namespace getPostTypes {
+    // Defined Sliders Data
+    export type data = {
+      title: string;
+      category: string;
+      type: string;
+      slug: string;
+      description: string;
+      contents: string;
+      featured?: {
+        data: {
+          id: number;
+          attributes: Resources.MediaAttributes;
+        };
+      };
+    };
+    export type _response = {
+      id: number;
+      attributes: data;
+    };
+    //General Output
+    export type request = Resources.Requests;
+    export type response = {
+      data: _response[];
+      meta: {
+        pagination: Resources.PaginationTypes;
+      };
+    };
+  }
 }

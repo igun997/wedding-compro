@@ -52,6 +52,7 @@ export namespace Resources {
     data: {
       title?: string;
       paragraphs?: string[];
+      contents?: string;
       url?: string;
       text?: string;
       background?: string;

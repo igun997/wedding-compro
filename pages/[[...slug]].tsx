@@ -1,7 +1,7 @@
 import { LayoutConfigWithNextPage } from '../configs/layout.config';
 import React, { useEffect } from 'react';
 import { Button, Col, Result, Row } from 'antd';
-import { getPage, getSliders } from '../services/root';
+import { getPage, getPostBySlug, getSliders } from '../services/root';
 import { RootResources } from '../types/services/root';
 import { useAppDispatch, useAppSelector } from '../configs/hooks.config';
 import {
@@ -18,7 +18,7 @@ import {
 import { useRouter } from 'next/router';
 import RenderSection from '../components/Whitelabel';
 
-export async function getServerSideProps({ resolvedUrl }: any) {
+export async function getServerSideProps({ resolvedUrl, query }: any) {
   const sliderRequest: RootResources.getSliderTypes.request = {
     fields: ['name'],
     populate: ['media'],
@@ -29,6 +29,14 @@ export async function getServerSideProps({ resolvedUrl }: any) {
   if (_trimPath === '') {
     _trimPath = 'home';
   }
+  let isPost = false;
+  if (query?.slug) {
+    isPost = query.slug.includes('post');
+  }
+  if (isPost) {
+    _trimPath = 'home';
+  }
+
   try {
     _data = await getPage(_trimPath);
     _sliders = await getSliders(sliderRequest);
@@ -41,10 +49,60 @@ export async function getServerSideProps({ resolvedUrl }: any) {
   }
 
   const isError = _data === null || _sliders === null;
+  let pageSection = _data as RootResources.getPageTypes.response;
+  let sliders = _sliders as RootResources.getSliderTypes.response;
+  if (isPost) {
+    let pageQuery: string = query.slug[2];
+    const getPost = await getPostBySlug(pageQuery, true);
+    if (getPost.data.length > 0) {
+      const selectPost = getPost.data[0];
+      let isSlider: any = false;
+      pageSection.data = pageSection.data.map((e) => {
+        isSlider = e.attributes.haveSlider;
+        if (
+          isSlider === false &&
+          e.attributes.header_image.data !== null &&
+          selectPost?.attributes?.featured
+        ) {
+          if (selectPost.attributes.featured.data !== null) {
+            e.attributes.header_image = selectPost.attributes.featured;
+          }
+        }
+        e.attributes.sections = [
+          {
+            component: 'post',
+            layout: {
+              xs: 24,
+            },
+            data: {
+              title: selectPost.attributes.title,
+              contents: selectPost.attributes.contents,
+              featured: selectPost?.attributes?.featured?.data?.attributes?.url
+                ? [selectPost?.attributes?.featured?.data?.attributes?.url]
+                : [],
+            },
+          },
+        ];
+        return e;
+      });
+      if (isSlider && selectPost?.attributes?.featured) {
+        sliders.data = [
+          {
+            id: 0,
+            attributes: {
+              description: 'Premade',
+              name: 'Premade',
+              media: selectPost.attributes.featured,
+            },
+          },
+        ];
+      }
+    }
+  }
   return {
     props: {
-      page: _data as RootResources.getPageTypes.response,
-      sliders: _sliders as RootResources.getSliderTypes.response,
+      page: pageSection,
+      sliders: sliders,
       isError: isError,
     },
   };

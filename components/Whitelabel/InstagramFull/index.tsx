@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { Resources } from '../../../types/types';
 import styles from './index.module.less';
 import { Col, Grid, Row, Typography } from 'antd';
@@ -7,7 +7,6 @@ import { InstagramOutlined } from '@ant-design/icons';
 const { useBreakpoint } = Grid;
 const InstagramFull: FC<Resources.SectionTypes> = (props) => {
   const { xs } = useBreakpoint();
-  const [recentPhotos, setRecentPhotos] = useState<string[]>([]);
   return (
     <div className={styles.root}>
       <Row gutter={[10, 10]}>
