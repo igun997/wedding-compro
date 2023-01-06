@@ -57,7 +57,7 @@ export async function getServerSideProps({ resolvedUrl, query }: any) {
     if (getPost.data.length > 0) {
       const selectPost = getPost.data[0];
       pageSection.data = pageSection.data.map((e) => {
-        if (e.attributes.header_image.data !== null && selectPost?.attributes?.featured) {
+        if (selectPost?.attributes?.featured) {
           if (selectPost.attributes.featured.data !== null) {
             e.attributes.header_image = selectPost.attributes.featured;
             e.attributes.haveSlider = false;
