@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 export namespace Resources {
   // General Attributes
   export type FormatResource = {
@@ -60,6 +62,7 @@ export namespace Resources {
       username?: string;
       featured?: string[];
       embed_ig?: string;
+      style?: CSSProperties;
     };
   };
   export type PageTypes = {
