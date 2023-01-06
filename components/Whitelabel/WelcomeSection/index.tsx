@@ -117,7 +117,7 @@ const WelcomeSection: FC<Resources.SectionTypes> = (props) => {
                     ) : (
                       <Row gutter={[10, 10]}>
                         {portfolio.map((item, index) => (
-                          <Col key={`image-${index}`} xs={24} md={8}>
+                          <Col key={`image-${index}`} xs={24} md={12} xxl={8}>
                             <CardList
                               onClick={() => navigateToPortfolio(item.slug)}
                               height={269}
