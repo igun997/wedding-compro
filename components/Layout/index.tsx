@@ -1,12 +1,14 @@
-import { Grid, Layout } from 'antd';
+import { Col, Grid, Layout, Row, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
 import HeroSlider, { Overlay, SideNav, Slide } from 'hero-slider';
 import TopNavigation from './TopNavigation';
 import { useAppSelector } from '../../configs/hooks.config';
 import { BASE_API } from '../../constants/config.constant';
+import { UpOutlined } from '@ant-design/icons';
+import Link from 'next/link';
 
-const { Content } = Layout;
+const { Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
 
 const BaseLayout: React.FC<any> = ({ children }) => {
@@ -32,7 +34,7 @@ const BaseLayout: React.FC<any> = ({ children }) => {
   return (
     <>
       <Layout className={styles.root}>
-        <Layout className="site-layout">
+        <Layout className="site-layout" id="top">
           {!pageProps?.isError && (
             <HeroSlider
               height={
@@ -93,6 +95,33 @@ const BaseLayout: React.FC<any> = ({ children }) => {
             {children}
           </Content>
         </Layout>
+        <Footer className="footer-container">
+          <Row>
+            <Col
+              xs={24}
+              md={{
+                span: 10,
+                offset: 7,
+              }}>
+              <Row gutter={[10, 10]} justify="space-between" align="middle">
+                <Col>
+                  <Typography.Text className="footer-text">
+                    All content Copyright © 2023. All rights reserved.
+                  </Typography.Text>
+                </Col>
+                <Col>
+                  <Link href="#top">
+                    <UpOutlined
+                      style={{
+                        fontSize: 20,
+                      }}
+                    />
+                  </Link>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Footer>
       </Layout>
     </>
   );
