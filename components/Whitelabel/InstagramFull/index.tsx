@@ -3,6 +3,7 @@ import { Resources } from '../../../types/types';
 import styles from './index.module.less';
 import { Col, Grid, Row, Typography } from 'antd';
 import { InstagramOutlined } from '@ant-design/icons';
+import { InstagramEmbed } from 'react-social-media-embed';
 
 const { useBreakpoint } = Grid;
 const InstagramFull: FC<Resources.SectionTypes> = (props) => {
@@ -17,7 +18,11 @@ const InstagramFull: FC<Resources.SectionTypes> = (props) => {
             offset: 7,
           }}>
           <Row gutter={[10, 10]} align="middle">
-            <Col xs={24} md={12}></Col>
+            {props?.data?.embed_ig && (
+              <Col xs={24} md={12}>
+                <InstagramEmbed url={props?.data?.embed_ig ?? ''} width="100%" />
+              </Col>
+            )}
             <Col xs={24} md={12}>
               <Row
                 gutter={[10, 20]}
@@ -32,7 +37,12 @@ const InstagramFull: FC<Resources.SectionTypes> = (props) => {
                   <Typography.Text className={'label'}>Follow our Instagram</Typography.Text>
                 </Col>
                 <Col xs={24}>
-                  <Typography.Text className={'username'}>@{props?.data?.username}</Typography.Text>
+                  <Typography.Link
+                    target="_blank"
+                    href={`https://www.instagram.com/${props?.data?.username}`}
+                    className={'username'}>
+                    @{props?.data?.username}
+                  </Typography.Link>
                 </Col>
               </Row>
             </Col>

@@ -59,6 +59,7 @@ export namespace Resources {
       instagram_username?: string;
       username?: string;
       featured?: string[];
+      embed_ig?: string;
     };
   };
   export type PageTypes = {
