@@ -73,7 +73,7 @@ const PortfolioSection: FC<Resources.SectionTypes> = (props) => {
   };
   useEffect(() => {
     loadPortfolio();
-  }, [router.pathname]);
+  }, [props.data.title]);
   return (
     <div className={styles.root}>
       <Row gutter={[10, 10]}>
