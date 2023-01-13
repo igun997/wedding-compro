@@ -6,14 +6,13 @@ import parse from 'html-react-parser';
 import styled, { keyframes } from 'styled-components';
 import { fadeIn } from 'react-animations';
 
-const fadedIn = keyframes`${fadeIn}`;
+const fadeInAnimation = keyframes`${fadeIn}`;
 
-const BouncyDiv = styled.div`
-  animation: 3s ${fadedIn};
+const FadeInDiv = styled.div`
+  animation: 1s ${fadeInAnimation};
 `;
 
 const PostSection: FC<Resources.SectionTypes> = (props) => {
-  console.log('timer');
   return (
     <div className={styles.root}>
       <Row gutter={[10, 10]}>
@@ -34,7 +33,7 @@ const PostSection: FC<Resources.SectionTypes> = (props) => {
             span: 10,
             offset: 7,
           }}>
-          <BouncyDiv>{parse(props?.data?.contents ?? '')}</BouncyDiv>
+          <FadeInDiv>{parse(props?.data?.contents ?? '')}</FadeInDiv>
         </Col>
       </Row>
     </div>

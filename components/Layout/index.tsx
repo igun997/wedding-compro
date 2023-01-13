@@ -27,11 +27,10 @@ const BaseLayout: React.FC<any> = ({ children }) => {
 
   useEffect(() => {
     if (pageProps?.sliders) {
-      setSliders(
-        pageProps?.sliders?.map(
-          (slider) => slider?.media?.data?.attributes?.formats?.large?.url ?? null,
-        ),
+      const _slider = pageProps?.sliders?.map(
+        (slider) => slider?.media?.data?.attributes?.formats?.large?.url ?? null,
       );
+      setSliders(_slider);
     }
   }, [pageProps]);
 
@@ -82,7 +81,7 @@ const BaseLayout: React.FC<any> = ({ children }) => {
                   key={'slide-1'}
                   background={{
                     backgroundImageSrc: `${
-                      BASE_API + pageProps?.header_image?.data?.attributes?.url
+                      BASE_API + pageProps?.header_image?.data?.attributes?.formats?.large?.url
                     }`,
                   }}
                 />
