@@ -7,44 +7,14 @@ import MobileMenu from '../MobileMenu';
 import { useRouter } from 'next/router';
 import LogoBlack from '../../../assets/images/black-192.png';
 import LogoWhite from '../../../assets/images/white-192.png';
+import useLoading from '../../useLoading';
+import { getParentMenu } from '../../../services/root';
 
 export type _MenuTypes = {
   slug: string | null;
   name: string;
   children?: _MenuTypes[];
 };
-const _menus: _MenuTypes[] = [
-  {
-    slug: 'home',
-    name: 'Home',
-  },
-  {
-    slug: 'about',
-    name: 'About',
-  },
-  {
-    slug: null,
-    name: 'Portfolio',
-    children: [
-      {
-        name: 'Wedding',
-        slug: 'wedding',
-      },
-      {
-        slug: 'engagement',
-        name: 'Engagement',
-      },
-      {
-        name: 'Couple Session',
-        slug: 'couple-session',
-      },
-    ],
-  },
-  {
-    slug: 'contact',
-    name: 'Contact',
-  },
-];
 const HeaderWrapper: any = styled.div`
   .ant-btn {
     color: ${(props: any) => (props?.gotBlack ? 'var(--primary-headings)' : '#fff')} !important;
@@ -63,6 +33,51 @@ const TopNavigation = (props: any) => {
   const [open, setOpen] = React.useState(false);
   const [leftMenus, setLeftMenus] = React.useState<_MenuTypes[]>([]);
   const [rightMenus, setRightMenus] = React.useState<_MenuTypes[]>([]);
+  const [allMenus, setAllMenus] = React.useState<_MenuTypes[]>([]);
+  const loadingMenus = useLoading();
+  const loadMenu = () => {
+    loadingMenus.handleLoading(true);
+    getParentMenu()
+      .then((res) => {
+        //map response to like _menus
+        const allMenus = res.data.map((item: any) => {
+          const _parent = item.attributes;
+          return {
+            slug: _parent.slug === '' ? null : _parent.slug,
+            name: _parent.name,
+            children: _parent.menus.data.map((child: any) => {
+              const _attr = child.attributes;
+              return {
+                slug: _attr.slug === '' ? null : _attr.slug,
+                name: _attr.name,
+              };
+            }),
+          };
+        });
+        const _leftMenus: _MenuTypes[] = [];
+        const _rightMenus: _MenuTypes[] = [];
+        // count _menus
+        const _count = allMenus.length;
+        // if _count is odd number
+        const _half = Math.round(_count / 2);
+        allMenus.forEach((item) => {
+          if (_leftMenus.length < _half) {
+            _leftMenus.push(item);
+          } else {
+            _rightMenus.push(item);
+          }
+        });
+        setLeftMenus(_leftMenus);
+        setRightMenus(_rightMenus);
+        setAllMenus(allMenus);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        loadingMenus.handleLoading(false);
+      });
+  };
   const handleOpen = () => {
     setOpen(!open);
   };
@@ -116,22 +131,7 @@ const TopNavigation = (props: any) => {
   };
 
   React.useEffect(() => {
-    // calculate left and right menus must be 0 if divide by 2
-    const _leftMenus: _MenuTypes[] = [];
-    const _rightMenus: _MenuTypes[] = [];
-    // count _menus
-    const _count = _menus.length;
-    // if _count is odd number
-    const _half = Math.round(_count / 2);
-    _menus.forEach((item) => {
-      if (_leftMenus.length < _half) {
-        _leftMenus.push(item);
-      } else {
-        _rightMenus.push(item);
-      }
-    });
-    setLeftMenus(_leftMenus);
-    setRightMenus(_rightMenus);
+    loadMenu();
   }, []);
 
   React.useEffect(() => {
@@ -171,7 +171,7 @@ const TopNavigation = (props: any) => {
               onClose={handleOpen}
               visible={open}
               key={'right-drawer'}>
-              <MobileMenu menus={_menus} navigate={navigateTo} closeDrawer={handleOpen} />
+              <MobileMenu menus={allMenus} navigate={navigateTo} closeDrawer={handleOpen} />
             </Drawer>
           </>
         ) : (
