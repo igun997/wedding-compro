@@ -1,4 +1,4 @@
-import { Button, Col, Drawer, Dropdown, Grid, Image, Layout, Menu, Row, Space } from 'antd';
+import { Button, Col, Drawer, Dropdown, Image, Layout, Menu, Row, Space } from 'antd';
 import styles from '../index.module.less';
 import React from 'react';
 import styled from '@emotion/styled';
@@ -9,6 +9,7 @@ import LogoBlack from '../../../assets/images/black-192.png';
 import LogoWhite from '../../../assets/images/white-192.png';
 import useLoading from '../../useLoading';
 import { getParentMenu } from '../../../services/root';
+import { useMediaQuery } from 'react-responsive';
 
 export type _MenuTypes = {
   slug: string | null;
@@ -25,9 +26,8 @@ const HeaderWrapper: any = styled.div`
   }
 `;
 const { Header } = Layout;
-const { useBreakpoint } = Grid;
 const TopNavigation = (props: any) => {
-  const { xs } = useBreakpoint();
+  const isTablet = useMediaQuery({ query: '(max-width: 991px)' });
   const router = useRouter();
   const [logo, setLogo] = React.useState<any>(LogoWhite.src);
   const [open, setOpen] = React.useState(false);
@@ -45,13 +45,16 @@ const TopNavigation = (props: any) => {
           return {
             slug: _parent.slug === '' ? null : _parent.slug,
             name: _parent.name,
-            children: _parent.menus.data.map((child: any) => {
-              const _attr = child.attributes;
-              return {
-                slug: _attr.slug === '' ? null : _attr.slug,
-                name: _attr.name,
-              };
-            }),
+            children:
+              _parent.menus.data.length > 0
+                ? _parent.menus.data.map((child: any) => {
+                    const _attr = child.attributes;
+                    return {
+                      slug: _attr.slug === '' ? null : _attr.slug,
+                      name: _attr.name,
+                    };
+                  })
+                : undefined,
           };
         });
         const _leftMenus: _MenuTypes[] = [];
@@ -145,13 +148,13 @@ const TopNavigation = (props: any) => {
   return (
     <Header
       className="site-layout-menu"
-      style={xs ? { paddingLeft: 10, paddingRight: 10 } : { marginTop: 20 }}>
+      style={isTablet ? { paddingLeft: 10, paddingRight: 10 } : { marginTop: 20 }}>
       <HeaderWrapper gotBlack={props?.black}>
-        {xs ? (
+        {isTablet ? (
           <>
             <Row justify={'space-between'} align="middle">
-              <Col>
-                <Image src={logo} height={96} preview={false} className={styles.logo} />
+              <Col span={6}>
+                <Image src={logo} preview={false} className={styles.logo} />
               </Col>
               <Col>
                 <Button onClick={handleOpen} type="link">
