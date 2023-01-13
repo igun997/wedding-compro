@@ -26,6 +26,29 @@ export namespace RootResources {
       };
     };
   }
+  export namespace getMenuTypes {
+    // Defined Sliders Data
+    export type data = {
+      name: string;
+      slug: string;
+      is_child: boolean;
+      menus?: {
+        data: data[];
+      };
+    };
+    export type _response = {
+      id: number;
+      attributes: data;
+    };
+    //General Output
+    export type request = Resources.Requests;
+    export type response = {
+      data: _response[];
+      meta: {
+        pagination: Resources.PaginationTypes;
+      };
+    };
+  }
   export namespace getPageTypes {
     export type data = Resources.PageTypes & {
       header_image: {

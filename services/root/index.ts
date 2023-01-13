@@ -108,3 +108,22 @@ export const getPostBySlugAndType = (
       throw error;
     });
 };
+
+//menus?populate=*
+
+/**
+ * Get Menu Data
+ * @param  RootResources.getMenuTypes.request
+ * @returns RootResources.getMenuTypes.response
+ * @example
+ * getMenu({ slug: 'main-menu' })
+ */
+
+export const getMenu = (params: RootResources.getMenuTypes.request) => {
+  return http
+    .get('/menus', { params })
+    .then((response) => response.data as RootResources.getMenuTypes.response)
+    .catch((error) => {
+      throw error;
+    });
+};
