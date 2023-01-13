@@ -27,7 +27,11 @@ const BaseLayout: React.FC<any> = ({ children }) => {
 
   useEffect(() => {
     if (pageProps?.sliders) {
-      setSliders(pageProps?.sliders?.map((slider) => slider?.media?.data?.attributes?.url ?? null));
+      setSliders(
+        pageProps?.sliders?.map(
+          (slider) => slider?.media?.data?.attributes?.formats?.large?.url ?? null,
+        ),
+      );
     }
   }, [pageProps]);
 

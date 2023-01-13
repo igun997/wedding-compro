@@ -1,12 +1,19 @@
-import { Col, Grid, Row, Typography } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import { FC } from 'react';
 import { Resources } from '../../../types/types';
 import styles from './index.module.less';
 import parse from 'html-react-parser';
+import styled, { keyframes } from 'styled-components';
+import { fadeIn } from 'react-animations';
 
-const { useBreakpoint } = Grid;
+const fadedIn = keyframes`${fadeIn}`;
+
+const BouncyDiv = styled.div`
+  animation: 3s ${fadedIn};
+`;
+
 const PostSection: FC<Resources.SectionTypes> = (props) => {
-  const { xs } = useBreakpoint();
+  console.log('timer');
   return (
     <div className={styles.root}>
       <Row gutter={[10, 10]}>
@@ -27,7 +34,7 @@ const PostSection: FC<Resources.SectionTypes> = (props) => {
             span: 10,
             offset: 7,
           }}>
-          {parse(props?.data?.contents ?? '')}
+          <BouncyDiv>{parse(props?.data?.contents ?? '')}</BouncyDiv>
         </Col>
       </Row>
     </div>

@@ -23,6 +23,7 @@ export namespace Resources {
       thumbnail: FormatResource;
       medium: FormatResource;
       small: FormatResource;
+      large: FormatResource;
     };
     hash: string;
     ext: string;
