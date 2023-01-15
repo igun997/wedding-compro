@@ -5,6 +5,7 @@ import { getPage, getPostBySlug, getSliders } from '../services/root';
 import { RootResources } from '../types/services/root';
 import { useAppDispatch, useAppSelector } from '../configs/hooks.config';
 import LogoBlack from '../assets/images/black-192.png';
+import style from './index.module.less';
 import {
   clearError,
   setDescription,
@@ -92,6 +93,35 @@ export async function getServerSideProps({ resolvedUrl, query }: any) {
   };
 }
 
+const FadeInSection = (props: any) => {
+  const [isVisible, setVisible] = React.useState(false);
+  const domRef = React.useRef<HTMLDivElement>(null);
+  const [observer, setObserver] = React.useState<IntersectionObserver | null>(null);
+  const observeAll = () => {
+    const _observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => setVisible(entry.isIntersecting));
+    });
+    if (domRef.current) {
+      _observer.observe(domRef.current);
+      setObserver(_observer);
+    }
+  };
+
+  const unobserveAll = () => {
+    if (domRef.current) {
+      observer && observer.unobserve(domRef.current as Element);
+    }
+  };
+  useEffect(() => {
+    observeAll();
+    return () => unobserveAll();
+  }, []);
+  return (
+    <div className={`fade-in-section ${isVisible ? 'is-visible' : ''}`} ref={domRef}>
+      {props.children}
+    </div>
+  );
+};
 const Home: LayoutConfigWithNextPage = (props: any) => {
   const router = useRouter();
   const [pageError, setPageError] = React.useState<boolean>(false);
@@ -146,11 +176,13 @@ const Home: LayoutConfigWithNextPage = (props: any) => {
     );
   } else {
     return (
-      <Row>
+      <Row className={style.root}>
         {pages?.sections &&
           pages?.sections?.map((section, index) => (
             <Col key={index} {...section.layout}>
-              <RenderSection {...section} />
+              <FadeInSection>
+                <RenderSection {...section} />
+              </FadeInSection>
             </Col>
           ))}
       </Row>
